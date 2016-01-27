@@ -17,7 +17,7 @@ public class Team {
    private String city;
    private String owner;
    private String competition;
-   private final Set<String> team;
+   private final Set<String> players;
    private final Date creation;
 
     public Team(String id, String name, String city, String owner, String competition) {
@@ -27,56 +27,52 @@ public class Team {
         this.owner = owner;
         this.competition = competition;
         creation = new Date();
-        team=new HashSet<>();
+        players=new HashSet<>();
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getId() {
+    public synchronized String getId() {
         return id;
     }
 
-    public void setCity(String city) {
+    public synchronized void setCity(String city) {
         this.city = city;
     }
 
-    public void setOwner(String owner) {
+    public synchronized void setOwner(String owner) {
         this.owner = owner;
     }
 
-    public void setCompetition(String competition) {
+    public synchronized void setCompetition(String competition) {
         this.competition = competition;
     }
 
-    public String getName() {
+    public synchronized String getName() {
         return name;
     }
 
-    public String getCity() {
+    public synchronized String getCity() {
         return city;
     }
 
-    public String getOwner() {
+    public synchronized String getOwner() {
         return owner;
     }
 
-    public String getCompetition() {
+    public synchronized String getCompetition() {
         return competition;
     }
 
-    public Set<String> getTeam() {
-        return team;
+    public synchronized Set<String> getPlayers() {
+        return players;
     }
 
-    public Date getCreation() {
+    public synchronized Date getCreation() {
         return creation;
     }
 
     @Override
-    public String toString() {
-        return "Team{" + "id=" + id + ", name=" + name + ", city=" + city + ", owner=" + owner + ", competition=" + competition + ", team=" + team + ", creation=" + creation + '}';
+    public synchronized String toString() {
+        return "Team{" + "id=" + id + ", name=" + name + ", city=" + city + ", owner=" + owner + ", competition=" + competition + ", players=" + players + ", creation=" + creation + '}';
     }
 
 

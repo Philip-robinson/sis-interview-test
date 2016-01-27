@@ -22,31 +22,32 @@ public class TeamStore {
         return store.get(id);
     }
 
-    public Team create(String name, String city, 
+    public synchronized Team create(String name, String city, 
                        String owner, String competition){
         String id =nameToId.get(name);
         if (id==null) id = ""+ this.id.incrementAndGet();
         Team t = new Team(id, name, city, owner, competition) ;
         store.put(id, t);
+        nameToId.put(name, id);
         return t;
     }
 
-    public Map<String, Team> getAll() {
-        return store;
+    public synchronized Map<String, Team> getAll() {
+        return new HashMap(store);
     }
 
-    boolean exists(String id) {
+    public synchronized boolean exists(String id) {
         return store.get(id) != null;
     }
-    boolean nameExists(String name) {
+    public synchronized boolean nameExists(String name) {
         return nameToId.get(name) != null;
     }
 
-    void delete(String id) {
+    public synchronized void delete(String id) {
         store.remove(id);
     }
 
-    String getId(String name) {
+    public synchronized String getId(String name) {
         return nameToId.get(name);
     }
 }

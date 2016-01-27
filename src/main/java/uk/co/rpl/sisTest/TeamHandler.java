@@ -72,20 +72,22 @@ class TeamHandler implements HttpHandler {
         String city = req.getString("city");
         String competition = req.getString("competition");
         if (name != null && owner != null && city != null && competition != null){
-            LOG.debug("Creted");
+            LOG.debug("Created");
             if (teamStore.nameExists(name))
                 alreadyExists(he, teamStore.getId(name));
-            Team team = teamStore.create(name, city, owner, competition);
-            LOG.debug("Created");
-            JSONArray players = req.getJSONArray("players");
-            if (players != null){
-                Set<String> playerList = team.getTeam();
-                players.forEach(pl-> {
-                    playerList.add(pl.toString());
-                    LOG.debug("Adding player {}", pl);
-                });
+            else{
+                Team team = teamStore.create(name, city, owner, competition);
+                LOG.debug("Created");
+                JSONArray players = req.getJSONArray("players");
+                if (players != null){
+                    Set<String> playerList = team.getPlayers();
+                    players.forEach(pl-> {
+                        playerList.add(pl.toString());
+                        LOG.debug("Adding player {}", pl);
+                    });
+                }
+                writeOut(he, toJSONString(team));
             }
-            writeOut(he, toJSONString(team));
         }else illegalInput(he);
     }
 
@@ -105,7 +107,7 @@ class TeamHandler implements HttpHandler {
             if (competition != null) team.setCompetition(competition);
             JSONArray players = req.getJSONArray("players");
             if (players != null){
-                Set<String> playerList = team.getTeam();
+                Set<String> playerList = team.getPlayers();
                 playerList.clear();
                 players.forEach(pl-> playerList.add(pl.toString()));
             }
